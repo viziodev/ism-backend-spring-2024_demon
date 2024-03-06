@@ -1,0 +1,63 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template"
+>
+
+<body>
+<div class="container-fluid mt-2" layout:fragment="contentForView">
+    <div class="card mt-1">
+        <div class="card-header">
+            <h3>Liste des Clients</h3>
+        </div>
+        <div class="card-body">
+              <div  class="my-2 float-end">
+                       <a th:href="@{/form-client}" class="btn btn-outline-success" >Nouveau</a>
+              </div>
+
+             <form class="d-flex w-50 mb-3" method="get" th:action="@{/liste-client}">
+                <input th:value="${keyword}" class="form-control me-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+             </form>
+            <table class="table table-bordered">
+                <thead>
+                <th>Nom et Prenom</th>
+                <th>Telephone</th>
+                <th>Quartier</th>
+                <th>Numero Villa</th>
+                <th>Commandes</th>
+                </thead>
+                <tbody>
+                 <tr th:each="cl:${clients}">
+                     <td th:text="${cl.nomComplet}"></td>
+                     <td th:text="${cl.telephone}"></td>
+                     <td th:text="${cl.quartier}"></td>
+                     <td th:text="${cl.numVilla}"></td>
+                     <td>
+                           <a th:href="@{/commandes/client/{id}(id=${cl.id})}"  class="btn btn-xs btn-warning  btn-xs"> Mes Commandes </a>
+                           <a th:href="@{/form-commande/client/{id}(id=${cl.id})}"  class="mr-2 btn btn-outline-success btn-xs" >Nouvelle Commande</a>
+                     </td>
+                 </tr>
+                </tbody>
+
+            </table>
+            <nav aria-label="Page navigation example float-end">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item" th:each="p,status:${pages}">
+                        <a
+                            th:class="${status.index==currentPage ? 'page-link active':'page-link'} "
+                            th:text="${status.index+1}"
+                            th:href="@{liste-client(page=${status.index },keyword=${keyword})}"
+                        ></a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- Content here -->
+</div>
+</body>
+</html>

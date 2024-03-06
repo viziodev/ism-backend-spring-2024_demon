@@ -1,0 +1,59 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<body>
+<div class="container-fluid mt-2" layout:fragment="contentForView">
+    <div class="card mt-1">
+        <div class="card-header">
+            <h3>Liste des Clients</h3>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <thead>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Etat</th>
+                <th>Adresse</th>
+                <th>Paiement</th>
+                </thead>
+                <tbody>
+                 <tr th:each="cl:${commandes}">
+                     <td th:text="${cl.dateComd}"></td>
+                     <td th:text="${cl.montant}"></td>
+                     <td th:text="${cl.etat}"></td>
+                     <td th:text="${cl.adresse}"></td>
+
+                     <td>
+                         <a class="btn btn-xs btn-warning" th:text="${cl.etatSuivant}">Payer</a>
+                     </td>
+                 </tr>
+                </tbody>
+
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item" th:each="p,status:${pages}">
+                        <a th:if="${clientId!=null}"
+                            th:class="${status.index==currentPage ? 'page-link active':'page-link'} "
+                            th:text="${status.index+1}"
+                            th:href="@{/commandes/client/{id}(id=${clientId},page=${status.index })}"
+                        ></a>
+                        <a th:if="${clientId==null}"
+                           th:class="${status.index==currentPage ? 'page-link active':'page-link'} "
+                           th:text="${status.index+1}"
+                           th:href="@{/commandes(page=${status.index})}"
+                        ></a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- Content here -->
+</div>
+</body>
+</html>

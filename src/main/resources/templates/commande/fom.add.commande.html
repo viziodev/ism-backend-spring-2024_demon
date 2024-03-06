@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container-fluid mt-2" layout:fragment="contentForView">
+    <div class="card mt-1">
+        <div class="card-header">
+            <h3>Enregistrement une Commande</h3>
+        </div>
+         <div class="card-body">
+             <div class=" card col-md-10 offset-1">
+                 <div class="card-body">
+                     <div class="row">
+                         <div class="col">
+                             <input type="text"
+                                    th:value="${panier.client.nomComplet}"
+                                    readonly class="form-control" placeholder="Nom et Prenom" aria-label="First name">
+                         </div>
+                         <div class="col">
+                             <input
+                                     type="text"
+                                     th:value="${panier.client.telephone}"
+                                     readonly class="form-control" placeholder="Telephone" aria-label="First name">
+                         </div>
+                         <div class="col">
+                             <input type="text"
+                                    th:value="${panier.client.adresseComplet}"
+                                    readonly class="form-control" placeholder="Adresse" aria-label="Last name">
+                         </div>
+                     </div>
+                 </div>
+             </div>
+
+             <div class=" card col-md-10 offset-1 my-2">
+                 <div class="card-body w-100">
+                     <form class="d-flex my-2 w-100" method="post"
+                           th:object="${articleForm}"
+                           th:action="@{/add-panier}"
+                           >
+                         <div class="row w-100">
+                             <div class="col">
+                                 <select  name="idArticle"
+                                          th:field="*{idArticle}"
+                                          class="form-select " id="specificSizeSelect">
+                                     <option selected value="0">Choisir un Article</option>
+                                     <option th:each="article:${articleSelectForm}"
+                                             th:value="${article.id}"
+                                             th:text="${article.libelle}"
+                                     ></option>
+
+                                 </select>
+                             </div>
+
+                             <div class="col-md">
+                                 <input type="text"
+                                        name="qte"
+                                        th:field="*{quantite}"
+                                        class="form-control" placeholder="Quantite" aria-label="Last name">
+                             </div>
+                             <div class="col-md">
+                                 <input type="text"
+                                        name="prix"
+                                        th:field="*{prix}"
+                                        class="form-control" placeholder="Prix Unitaire" aria-label="Last name">
+                             </div>
+                             <div class="col">
+                                 <button class="btn btn-outline-success" type="submit">Ajouter</button>
+                             </div>
+
+
+                         </div>
+                     </form>
+
+                 </div>
+             </div>
+             <div class=" card col-md-10 offset-1 my-2">
+                 <div class="card-body w-100">
+                     <table class="table table-bordered mt-1 ">
+                         <thead>
+                         <th>Article</th>
+                         <th>Prix</th>
+                         <th>Quantite</th>
+                         <th>Montant</th>
+                         </thead>
+                         <tbody>
+                         <tr th:each="articlePanier:${panier.articlesPanier}">
+                             <td th:text="${articlePanier.libelle}"></td>
+                             <td th:text="${articlePanier.prix}"></td>
+                             <td th:text="${articlePanier.quantite}"></td>
+                             <td th:text="${articlePanier.montant}"></td>
+                         </tr>
+                         </tbody>
+                     </table>
+                     <div class=" row float-start w-25">
+                         <button type="button " class="btn btn-info fs-3">
+                             Total:  <span class="badge text-white font-monospace fs-3" th:text="${panier.total}" >  </span>
+                         </button>
+                     </div>
+                     <div class="row float-end w-25 mt-5">
+                         <a  th:href="@{/add-commande}"  type="button " class="btn btn-info ">
+                                Valider la Commande
+                         </a>
+                     </div>
+                 </div>
+             </div>
+         </div>
+    </div>
+
+
+
+
+         </div>
+    </div>
+</div>
+</body>
+</html>
