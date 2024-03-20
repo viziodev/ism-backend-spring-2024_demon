@@ -1,5 +1,7 @@
 package com.ism.ecom.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ism.ecom.security.data.entities.AppUser;
 import jakarta.persistence.*;
 import lombok.*;

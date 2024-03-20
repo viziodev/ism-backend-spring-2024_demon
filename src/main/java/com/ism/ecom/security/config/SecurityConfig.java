@@ -1,6 +1,7 @@
 package com.ism.ecom.security.config;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -12,6 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -32,14 +36,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
        return  http.csrf(AbstractHttpConfigurer::disable)
-                     .formLogin(AbstractAuthenticationFilterConfigurer::permitAll
-                      ).authorizeHttpRequests(auth-> auth
+                      //  .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                        .authorizeHttpRequests(auth-> auth
+                       .requestMatchers("/api/**").permitAll()
                        .requestMatchers("/admin/**").hasAuthority("Admin")
                        .requestMatchers("/client/**").hasAuthority("Client")
                        .anyRequest().authenticated()
                      )
                   .build();
     }
+
+
 
 
 }

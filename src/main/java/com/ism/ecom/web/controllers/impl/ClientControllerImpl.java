@@ -45,8 +45,8 @@ public class ClientControllerImpl implements ClientController {
             Page<ClientShowReponseDto> clientsDto = clients.map(ClientShowReponseDto::toDo);
             model.addAttribute("clients",clientsDto.getContent());
             model.addAttribute("pages",new int[clientsDto.getTotalPages()]);
-           model.addAttribute("currentPage",page);
-           model.addAttribute("keyword",keyword);
+            model.addAttribute("currentPage",page);
+            model.addAttribute("keyword",keyword);
            return "client/client";
     }
     //@Override
