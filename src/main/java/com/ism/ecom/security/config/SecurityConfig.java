@@ -17,27 +17,29 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private  final UserDetailsService service;
+    private  final UserDetailsService userDetails;
     private final PasswordEncoder passwordEncoder;
     //Authentication
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(service);
+        daoAuthenticationProvider.setUserDetailsService(userDetails);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         return daoAuthenticationProvider;
     }
+
+    //Autorisation
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasAuthority("Admin")
-                        .requestMatchers("/client/**").hasAuthority("Client")
-                        .anyRequest()
-                        .authenticated()
-                );
-        return http.build();
+       return  http.csrf(AbstractHttpConfigurer::disable)
+                     .formLogin(AbstractAuthenticationFilterConfigurer::permitAll
+                      ).authorizeHttpRequests(auth-> auth
+                       .requestMatchers("/admin/**").hasAuthority("Admin")
+                       .requestMatchers("/client/**").hasAuthority("Client")
+                       .anyRequest().authenticated()
+                     )
+                  .build();
     }
+
 
 }

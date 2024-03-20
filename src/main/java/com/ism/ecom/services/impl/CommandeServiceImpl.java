@@ -9,6 +9,7 @@ import com.ism.ecom.data.repositories.ArticleRepository;
 import com.ism.ecom.data.repositories.ClientRepository;
 import com.ism.ecom.data.repositories.CommandeRepository;
 import com.ism.ecom.data.repositories.LigneCommandeRepository;
+import com.ism.ecom.exceptions.EntityNotFoundException;
 import com.ism.ecom.services.CommandeService;
 import com.ism.ecom.web.dto.request.PanierDto;
 import jakarta.transaction.Transactional;
@@ -44,8 +45,9 @@ public class CommandeServiceImpl implements CommandeService {
 
     @Override
     public void saveCommande(PanierDto panierDto) {
-        Client client = clientRepository.findById(panierDto.getClient().getId()).orElse(null);
-        if (client!=null){
+        Client client = clientRepository.findById(panierDto.getClient().getId())
+                .orElseThrow(()->new EntityNotFoundException("Client n'existe pas"));
+
             Commande commande = new Commande(
                    new Date(),
                    panierDto.getTotal(),
@@ -59,7 +61,7 @@ public class CommandeServiceImpl implements CommandeService {
                 List<LigneCommande> ligneCommande = panierDto.getArticlesPanier().stream().map(
                    articlePanierDto -> {
                        Article article = articleRepository.findById(articlePanierDto.getIdArticle())
-                               .orElseThrow(()->new RuntimeException("article n'existe pas"));
+                               .orElseThrow(()->new EntityNotFoundException("article n'existe pas"));
                           return new LigneCommande(
                                   articlePanierDto.getMontant(),
                                   articlePanierDto.getQuantite(),
@@ -71,7 +73,7 @@ public class CommandeServiceImpl implements CommandeService {
                  ligneCommandeRepository.saveAllAndFlush(ligneCommande);
 
            }
-       }
+
 
 
 

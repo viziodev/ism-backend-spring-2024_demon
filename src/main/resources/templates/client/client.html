@@ -16,7 +16,7 @@
                        <a th:href="@{/form-client}" class="btn btn-outline-success" >Nouveau</a>
               </div>
 
-             <form class="d-flex w-50 mb-3" method="get" th:action="@{/liste-client}">
+             <form class="d-flex w-50 mb-3" method="get" th:action="@{/admin/liste-client}">
                 <input th:value="${keyword}" class="form-control me-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
              </form>
@@ -35,8 +35,8 @@
                      <td th:text="${cl.quartier}"></td>
                      <td th:text="${cl.numVilla}"></td>
                      <td>
-                           <a th:href="@{/commandes/client/{id}(id=${cl.id})}"  class="btn btn-xs btn-warning  btn-xs"> Mes Commandes </a>
-                           <a th:href="@{/form-commande/client/{id}(id=${cl.id})}"  class="mr-2 btn btn-outline-success btn-xs" >Nouvelle Commande</a>
+                           <a th:href="@{/client/commandes/client/{id}(id=${cl.id})}"  class="btn btn-xs btn-warning  btn-xs"> Mes Commandes </a>
+                           <a th:href="@{/client/form-commande/client/{id}(id=${cl.id})}"  class="mr-2 btn btn-outline-success btn-xs" >Nouvelle Commande</a>
                      </td>
                  </tr>
                 </tbody>
@@ -49,7 +49,7 @@
                         <a
                             th:class="${status.index==currentPage ? 'page-link active':'page-link'} "
                             th:text="${status.index+1}"
-                            th:href="@{liste-client(page=${status.index },keyword=${keyword})}"
+                            th:href="@{/admin/liste-client(page=${status.index },keyword=${keyword})}"
                         ></a>
                     </li>
                     <li class="page-item"><a class="page-link" href="#">Next</a></li>

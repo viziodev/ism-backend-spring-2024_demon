@@ -2,6 +2,7 @@ package com.ism.ecom.services.impl;
 
 import com.ism.ecom.data.entities.Client;
 import com.ism.ecom.data.repositories.ClientRepository;
+import com.ism.ecom.exceptions.EntityNotFoundException;
 import com.ism.ecom.services.ClientService;
 import com.ism.ecom.web.dto.request.ClientCreateRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClientById(Long id) {
-        return clientRepository.findById(id).orElse(null);
+        return clientRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("article n'existe pas"));
     }
 }

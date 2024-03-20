@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 public interface ClientController {
-
-    @GetMapping("/liste-client")
+    ///client
+    @GetMapping("/admin/liste-client")//End Point
     String listerClient(Model model,
                           @RequestParam(defaultValue = "0") int page,
                           @RequestParam(defaultValue = "8") int size,
@@ -23,9 +23,9 @@ public interface ClientController {
     //@GetMapping("/")
     //String index();
 
-     @GetMapping("/form-client")
+     @GetMapping("/admin/form-client")
      String showForm(Model model);
 
-    @PostMapping("/save-client")
+    @PostMapping("/admin/save-client")
     String saveClient(ClientCreateRequestDto client, BindingResult bindingResult, RedirectAttributes redirectAttributes);
 }

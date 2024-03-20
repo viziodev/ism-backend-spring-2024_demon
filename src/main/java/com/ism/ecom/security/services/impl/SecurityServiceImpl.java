@@ -5,6 +5,7 @@ import com.ism.ecom.security.data.entities.AppUser;
 import com.ism.ecom.security.data.reporitories.AppRoleRepository;
 import com.ism.ecom.security.data.reporitories.AppUserRepository;
 import com.ism.ecom.security.services.SecurityService;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -61,9 +62,10 @@ public class SecurityServiceImpl implements SecurityService , UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser appUser = appUserRepository.findByUsername(username);
+        if (appUser == null) throw new RuntimeException("User not found ");
         List<SimpleGrantedAuthority> authorities = appUser.getRoles()
                 .stream()
                 .map(appRole -> new SimpleGrantedAuthority(appRole.getRoleName())).toList();
-        return new User(appUser.getUsername(), appUser.getPassword(),authorities);
+           return new User(appUser.getUsername(), appUser.getPassword(),authorities);
     }
 }

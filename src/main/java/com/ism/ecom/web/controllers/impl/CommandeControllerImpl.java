@@ -3,6 +3,7 @@ package com.ism.ecom.web.controllers.impl;
 import com.ism.ecom.data.entities.Article;
 import com.ism.ecom.data.entities.Client;
 import com.ism.ecom.data.entities.Commande;
+import com.ism.ecom.exceptions.EntityNotFoundException;
 import com.ism.ecom.services.ArticleService;
 import com.ism.ecom.services.ClientService;
 import com.ism.ecom.services.CommandeService;
@@ -62,7 +63,6 @@ public class CommandeControllerImpl implements CommandeController {
            if (clientById == null){
               return "redirect:/liste-client";
            }
-
             panier.setClient(ClientShowReponseDto.toDo(clientById));
             List<ArticleSimpleResponseDto> list = articlesFormComande.stream().map(article -> new ArticleSimpleResponseDto(article.getId(), article.getLibelle())).toList();
             model.addAttribute("articleSelectForm",list);
@@ -81,7 +81,10 @@ public class CommandeControllerImpl implements CommandeController {
     }
 
     private  Page<CommandeResponseDto> getCommandeResponse(Long id,int page, int size){
-        Page<Commande> commandes =id==null ? commandeService.getAllCommande(page, size): commandeService.getCommandeByClientWithPaginate(id, page, size);
+        Page<Commande> commandes =id==null ?
+                commandeService.getAllCommande(page, size)
+                : commandeService.getCommandeByClientWithPaginate(id, page, size);
+
         return  commandes.map(CommandeResponseDto::toDto);
     }
 

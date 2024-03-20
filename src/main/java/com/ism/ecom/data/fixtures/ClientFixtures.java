@@ -3,6 +3,7 @@ package com.ism.ecom.data.fixtures;
 import com.ism.ecom.data.entities.Adresse;
 import com.ism.ecom.data.entities.Client;
 import com.ism.ecom.data.repositories.ClientRepository;
+import com.ism.ecom.security.services.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(3)
 public class ClientFixtures implements CommandLineRunner {
     private final ClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityService securityService;
     @Override
     public void run(String... args) throws Exception {
         for (int i = 0; i < 20; i++) {
@@ -31,6 +33,7 @@ public class ClientFixtures implements CommandLineRunner {
                  client.setPassword(passwordEncoder.encode("passer"));
                  client.setUsername("client"+i);
                  clientRepository.save(client);
+                 securityService.addRoleToUser("client"+i,"Client");
         }
     }
 }

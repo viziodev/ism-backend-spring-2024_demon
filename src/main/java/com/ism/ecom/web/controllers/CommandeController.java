@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface CommandeController {
-    @GetMapping("/commandes/client/{id}")
+    @GetMapping("/client/commandes/client/{id}")
     String listerCommandeUnClient(Model model,@PathVariable Long id,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "8") int size);
 
-    @GetMapping("/commandes")
+    @GetMapping("/admin/commandes")
     String listerAllCommandes(Model model,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "8") int size);
 
-    @GetMapping("/form-commande/client/{id}")
+    @GetMapping("/client/form-commande/client/{id}")
     String showForm(Model model,@PathVariable Long id,@ModelAttribute("panier") PanierDto panier );
-    @GetMapping("/add-commande")
+    @GetMapping("/client/add-commande")
     String saveCommande(Model model,@ModelAttribute("panier") PanierDto panier );
 }
